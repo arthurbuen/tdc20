@@ -2,9 +2,9 @@ package tdc.core;
 
 public class BasePage {
 
-    protected DSL dsl;
+    protected SeleniumDSL dsl;
 
     public BasePage() {
-        dsl = new DSL();
+        dsl = new SeleniumDSL();
     }
 }

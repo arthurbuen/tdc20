@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 
 import static tdc.core.DriverFactory.getDriver;
 
-public class DSL {
+public class SeleniumDSL {
 
     public void write(String id, String text) {
         getDriver().findElement(By.id(id)).sendKeys(text);

@@ -6,6 +6,8 @@ import org.testng.annotations.Test;
 import tdc.core.BaseTest;
 import tdc.page.LoginPage;
 
+import java.nio.file.Paths;
+
 import static org.awaitility.Awaitility.await;
 import static tdc.core.DriverFactory.getDriver;
 
@@ -13,39 +15,44 @@ public class SeleniumLoginTest extends BaseTest {
 
     private LoginPage login;
 
+    static private String SUCESS_MESSAGE_WELCOME = "Bem-vindo ao TDC Floripa Online";
+    static private String ERROR_MESSAGE_REQUIRED_FIELD = "Required fields.";
+    static private String ERROR_MESSAGE_INVALID_USER = "Invalid username or password.";
+
     @BeforeMethod
-    public void before() {
+    public void setUp() throws Exception {
         login = new LoginPage();
-        getDriver().get("file:///C:/Users/arthur_bueno/Documents/tdc/LoginV2/Login/index.html");
+        String url = Paths.get( "C:/Users/arthur_bueno/Documents/tdc/LoginV2/Login/index.html" ).toUri().toURL().toString();
+        getDriver().get(url);
     }
 
     @Test
-    public void sucessTest(){
+    public void sucessLoginTest() {
 
         login.setUsername("tdcfloripa");
-        login.setPassword("tdcfloripa");
+        login.setPassword("online");
         login.actionLogin();
 
-        await().untilAsserted(() -> Assert.assertEquals(login.getSucessMessage(), "Bem-vindo ao TDC Floripa Online"));
+        await().untilAsserted(() -> Assert.assertEquals(login.getSucessMessage(), SUCESS_MESSAGE_WELCOME));
     }
 
     @Test
-    public void requiredFieldsTest(){
+    public void requiredFieldsTest() {
 
         login.setUsername("");
         login.setPassword("");
         login.actionLogin();
 
-        await().untilAsserted(() -> Assert.assertEquals(login.getErrorMessage(), "Required fields."));
+        await().untilAsserted(() -> Assert.assertEquals(login.getErrorMessage(), ERROR_MESSAGE_REQUIRED_FIELD));
     }
 
     @Test
-    public void invalidLoginTest(){
+    public void invalidLoginTest() {
 
         login.setUsername("tdc");
         login.setPassword("floripa");
         login.actionLogin();
 
-        await().untilAsserted(() -> Assert.assertEquals(login.getErrorMessage(), "Invalid username or password."));
+        await().untilAsserted(() -> Assert.assertEquals(login.getErrorMessage(), ERROR_MESSAGE_INVALID_USER));
     }
 }
